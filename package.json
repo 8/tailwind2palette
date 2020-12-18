@@ -1,0 +1,9 @@
+{
+  "name": "tailwind2palette",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "tailwindcss": "^2.0.2"
+  }
+}
