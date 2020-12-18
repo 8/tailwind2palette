@@ -6,6 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="Gimp.fs" />
+    <Compile Include="TailwindCss.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 
