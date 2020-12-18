@@ -1,4 +1,5 @@
 open System.IO
+open System
 
 module Program =
 
@@ -14,24 +15,36 @@ module Program =
       PaletteName = "TailwindCss"
     }
   
-  let colorsFromFile file =
-    File.ReadAllText file |> TailwindCss.Colors.fromString
+  let colorDefinitionsFromFile file =
+    File.ReadAllText file
+    |> TailwindCss.ColorDefinitions.fromString
 
-  let mapColor (color : TailwindCss.RgbColor) : Gimp.RgbColor =
-    let formatHex (color : TailwindCss.RgbColor)
-      = $"#{color.R:x2}{color.G:x2}{color.B:x2}"
+  let gimpColorsFromColorDefinitions (colorDefinitions : TailwindCss.ColorDefinitions) =
+    colorDefinitions
+    |> Array.map (fun colorDef -> 
+      match colorDef with
+      | TailwindCss.NamedColor namedColor -> [|{
+          Gimp.RgbColor.Name = namedColor.Name
+          Gimp.RgbColor.R = namedColor.Color.R
+          Gimp.RgbColor.G = namedColor.Color.G
+          Gimp.RgbColor.B = namedColor.Color.B
+        } |]
+      | TailwindCss.NamedColorGroup group ->
+          group.NamedColors
+          |> Array.map (fun namedColor -> {
+            Gimp.RgbColor.Name = $"{group.Name}-{namedColor.Name}"
+            Gimp.RgbColor.R = namedColor.Color.R
+            Gimp.RgbColor.G = namedColor.Color.G
+            Gimp.RgbColor.B = namedColor.Color.B
+          })
+      )
+    |> Array.concat
 
-    {
-      Name = formatHex color
-      R = color.R
-      G = color.G
-      B = color.B
-    }
   
   let readPalette fileIn paletteName =
     fileIn
-    |> colorsFromFile
-    |> Array.map mapColor
+    |> colorDefinitionsFromFile
+    |> gimpColorsFromColorDefinitions
     |> Gimp.Palette.create paletteName
 
   let printPalette (p : Gimp.Palette) =

@@ -25,8 +25,6 @@ module Palette =
     
     let formatColor (color : RgbColor): string =
       let formatPart p = p.ToString().PadLeft(3)
-      //let formatHex color = $"{color.R:x2}{color.G:x2}{color.B:x2}"
-      //$"{formatPart color.R} {formatPart color.G} {formatPart color.B} #{formatHex color}"
       $"{formatPart color.R} {formatPart color.G} {formatPart color.B} {color.Name}"
     
     use sw = new StreamWriter(stream, NewLine = "\n")
