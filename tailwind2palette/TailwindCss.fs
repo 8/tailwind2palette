@@ -72,7 +72,6 @@ type ColorDefinition =
   | NamedColorGroup of NamedColorGroup
 
 type ColorDefinitions = ColorDefinition array
-  
 
 module ColorDefinitions =
   let fromString s : ColorDefinitions =

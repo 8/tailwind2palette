@@ -12,7 +12,7 @@ module Program =
     let def = {
       InputFile = "../../../../node_modules/tailwindcss/colors.js"
       OutputFile = "tailwindcss.gpl"
-      PaletteName = "TailwindCss"
+      PaletteName = "Tailwind CSS"
     }
   
   let colorDefinitionsFromFile file =
@@ -20,23 +20,18 @@ module Program =
     |> TailwindCss.ColorDefinitions.fromString
 
   let gimpColorsFromColorDefinitions (colorDefinitions : TailwindCss.ColorDefinitions) =
+    
     colorDefinitions
     |> Array.map (fun colorDef -> 
       match colorDef with
-      | TailwindCss.NamedColor namedColor -> [|{
-          Gimp.RgbColor.Name = namedColor.Name
-          Gimp.RgbColor.R = namedColor.Color.R
-          Gimp.RgbColor.G = namedColor.Color.G
-          Gimp.RgbColor.B = namedColor.Color.B
-        } |]
+      | TailwindCss.NamedColor namedColor -> [|
+          Gimp.RgbColor.from namedColor.Name (namedColor.Color.R, namedColor.Color.G, namedColor.Color.B)
+         |]
       | TailwindCss.NamedColorGroup group ->
           group.NamedColors
-          |> Array.map (fun namedColor -> {
-            Gimp.RgbColor.Name = $"{group.Name}-{namedColor.Name}"
-            Gimp.RgbColor.R = namedColor.Color.R
-            Gimp.RgbColor.G = namedColor.Color.G
-            Gimp.RgbColor.B = namedColor.Color.B
-          })
+          |> Array.map (fun namedColor ->
+            Gimp.RgbColor.from $"{group.Name}-{namedColor.Name}" (namedColor.Color.R, namedColor.Color.G, namedColor.Color.B)
+          )
       )
     |> Array.concat
 

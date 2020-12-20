@@ -8,6 +8,14 @@ type RgbColor = {
   G: byte
   B: byte
 }
+module RgbColor =
+  let from name (r, g, b) =
+    {
+      Name = name
+      R = r
+      G = g
+      B = b
+    }
 
 type Palette = {
   Name: string
