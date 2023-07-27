@@ -10,7 +10,7 @@ module Program =
   }
   module Arguments =
     let def = {
-      InputFile = "../../../../node_modules/tailwindcss/colors.js"
+      InputFile = "../../../../node_modules/tailwindcss/src/public/colors.js"
       OutputFile = "tailwindcss.gpl"
       PaletteName = "Tailwind CSS"
     }
