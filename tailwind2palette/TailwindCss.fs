@@ -86,7 +86,7 @@ module ColorDefinitions =
           Name = m.Groups.["Name"].Value
           Color = color
         }
-      let rNamedColor = Regex @"(?<NamedColor>(?<Name>[0-9]+): '(?<Value>#[0-9a-f]+)'),"
+      let rNamedColor = Regex @"(?<NamedColor>(?<Name>[0-9]+): '(?<Value>#[0-9a-f]+)'),?"
       rNamedColor.Matches s
       |> Seq.toArray
       |> Array.map namedColorFrom
